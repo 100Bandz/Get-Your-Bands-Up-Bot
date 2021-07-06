@@ -1,3 +1,4 @@
+import asyncio
 import discord
 from discord.embeds import Embed
 from discord.ext import commands
@@ -28,56 +29,37 @@ TOKEN = "ODU5MjU3Mzk2Nzk3ODk4NzUy.YNqDzw.hLz7uunfA9btxDhx0kGNDvHEc1g"
 
 bot = commands.Bot(command_prefix='.')
 
+stockdict = {"gme": "GME", 'tesla': 'TSLA', "arkk": "ARKK", "aqn": "AQN", "bitcoin": "BTC-USD"}
 
 
 @bot.event     ##Ctrl+K+C    Ctrl+K+U
 async def on_ready():
     print("We have logged in as {0.user}".format(bot))
-    # StockInfo(stockdict)
 
 @bot.command()
 async def embed(ctx):
     starttime = time.time()
     while True:
         print("working :D")
-        # msft = yf.Ticker("MSFT")
-        # print(msft.info)
-        embed=discord.Embed(title="Bandz To Make Her Dance", url="https://realdrewdata.medium.com/", description= 'The Bread comes first', color=0xFF5733)
-        embed.set_author(name= ctx.author.display_name , url="https://twitter.com/RealDrewData", icon_url= ctx.author.avatar_url)
-        embed.set_thumbnail(url = 'https://cdn.discordapp.com/attachments/838242488598134796/861778628533813248/1624112952498.jpg')
+        embed=discord.Embed(title="🤣", description= 'The Bread comes first', color=0x08a645)
+        embed.set_author(name= ctx.author.display_name, icon_url= ctx.author.avatar_url)
         for kname, vtick in stockdict.items():
             stock_ticker = vtick
             stock_name = yf.Ticker(stock_ticker)
-            marketprice = stock_name.info.get("regularMarketPrice", None)
-            embed.add_field(name= stock_name.info.get("shortName"), value= marketprice, inline=False)
+            marketprice = str(stock_name.info.get("regularMarketPrice", None))
+            embed.add_field(name= stock_name.info.get("shortName"), value= '$'+ marketprice, inline=False)
 
         await ctx.send(embed=embed)
-        time.sleep(60.0 - ((time.time() - starttime) % 60.0))
+        await asyncio.sleep(60.0 - ((time.time() - starttime) % 60.0))
 
 
-@bot.command()
-@commands.is_owner()
-async def Stop(ctx):
-    embed = discord.Embed(title="Bot has been shutdown", color=0xFF5733) #Issue: the bot is doing the embed command and wont do anything else until it finishes
-    await ctx.send(embed=embed)
-    await ctx.bot.logout()
-    # bot.run_coroutine_threadsafe(ctx.bot.logout(), ctx.bot.loop)      ##Fix this 
+# @bot.command()
+# @commands.is_owner()
+# async def Stop(ctx):
+#     embed = discord.Embed(title="Bot has been shutdown", color=0xFF5733) #Issue: the bot is doing the embed command and wont do anything else until it finishes
+#     await ctx.send(embed=embed)
+#     await ctx.bot.logout()
+#     # bot.run_coroutine_threadsafe(ctx.bot.logout(), ctx.bot.loop)      ##Fix this 
 
-
-stockdict = {"GME": "gme", "ARKK": "ark", "TEC.TO": "tec.to", "AQN": "aqn"}
-
-
-# def StockInfo(stock_dict):
-#     starttime = time.time()
-#     while True:
-#         print("working :D")
-#         for kname, vtick in stock_dict.items():
-#             stock_ticker = vtick
-#             stock_name = yf.Ticker(stock_ticker)
-#             # print(stock_name.info)
-
-#             marketprice = stock_name.info.get("regularMarketPrice", None)
-#             print(marketprice)
-#         time.sleep(60.0 - ((time.time() - starttime) % 60.0))
 
 bot.run(TOKEN)

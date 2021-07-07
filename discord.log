@@ -1,5 +1,0 @@
-2021-07-07 19:17:26,459:DEBUG:discord.client: on_ready has successfully been registered as an event
-2021-07-07 19:17:26,459:DEBUG:discord.client: on_command_error has successfully been registered as an event
-2021-07-07 19:17:26,459:INFO:discord.client: logging in using static token
-2021-07-07 19:17:26,459:INFO:discord.client: Cleaning up tasks.
-2021-07-07 19:17:26,459:INFO:discord.client: Closing the event loop.

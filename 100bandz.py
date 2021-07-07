@@ -4,6 +4,7 @@ from discord import colour
 from discord import message
 from discord.embeds import Embed
 from discord.ext import commands, tasks
+from discord.ext.commands.bot import Bot
 import yfinance as yf
 import pandas as pd
 import numpy as np
@@ -18,6 +19,10 @@ import json
 from datetime import datetime
 import sys
 import functools 
+from dotenv import load_dotenv
+
+load_dotenv()
+TOKEN = os.environ["DISCORD_TOKEN"]
 
 logger = logging.getLogger('discord')   ##Error Logs are written to a file called discord.log
 logger.setLevel(logging.DEBUG) 
@@ -25,7 +30,6 @@ handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w'
 handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
 logger.addHandler(handler)
 
-TOKEN = "ODU5MjU3Mzk2Nzk3ODk4NzUy.YNqDzw.hLz7uunfA9btxDhx0kGNDvHEc1g"
 
 bot = commands.Bot(command_prefix='>')
 status = cycle(['AHHH','（。＾▽＾）','🤑🤑🤑','boolin'])
@@ -55,8 +59,6 @@ async def on_ready():
         embed=discord.Embed(title="Bot is Online", color= 0x03fcf0)
         embed.set_author(name= "Get Your Bands Up", icon_url=bot.user.avatar_url)
         await channel.send(embed=embed)
-
-
 
 
 @to_async
@@ -106,6 +108,5 @@ async def restart(ctx):
     embed.set_author(name= "Get Your Bands Up", icon_url=bot.user.avatar_url)
     message = await ctx.send(embed=embed)
     restart_program()
-
 
 bot.run(TOKEN)

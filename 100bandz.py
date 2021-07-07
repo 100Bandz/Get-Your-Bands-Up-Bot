@@ -18,6 +18,7 @@ import os
 from itertools import cycle
 import json
 from datetime import datetime
+import sys
 
 
 logger = logging.getLogger('discord')   ##Error Logs are written to a file called discord.log
@@ -39,9 +40,14 @@ async def on_ready():
     change_status.start()
     # await bot.change_presence(status=discord.Status.online, activity=discord.Game("🤑🤑🤑"),afk=False)
     print("We have logged in as {0.user}".format(bot))
+        # First get the channel where the message should be sent
+    channel = discord.utils.get(bot.get_all_channels(), name='general')
+    embed=discord.Embed(title="Bot is Online!", color= 0x03fcf0)
+    embed.set_author(name= "Get Your Bands Up", icon_url=bot.user.avatar_url)
+    await channel.send(embed=embed)
 
 @bot.command()
-async def embed(ctx):
+async def start(ctx):
     starttime = time.time()
     while True:
         print("working :D")
@@ -56,7 +62,7 @@ async def embed(ctx):
             embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/838242488598134796/862063340707643452/1624112952498.jpg')
 
         await ctx.send(embed=embed)
-        await asyncio.sleep(120) #(60.0 - ((time.time() - starttime) % 60.0))
+        await asyncio.sleep(120)
 
 
 @tasks.loop(minutes= 5)
@@ -66,20 +72,22 @@ async def change_status():
 @bot.event
 async def on_command_error(ctx,error):
     if isinstance(error,commands.CommandNotFound):
-        embed=discord.Embed(title="Invalid Command used")
+        embed=discord.Embed(title="Invalid Command used",color= discord.Colour.dark_red())
+        embed.set_author(name= "Get Your Bands Up", icon_url=bot.user.avatar_url)
         await ctx.send(embed=embed)
 
-# bot.command()
-# async def search(ctx):
 
+def restart_program():
+    python = sys.executable
+    os.execl(python, python, * sys.argv)
 
-# @bot.command()
-# @commands.is_owner()
-# async def Stop(ctx):
-#     embed = discord.Embed(title="Bot has been shutdown", color=0xFF5733) #Issue: the bot is doing the embed command and wont do anything else until it finishes
-#     await ctx.send(embed=embed)
-#     await ctx.bot.logout()
-#     # bot.run_coroutine_threadsafe(ctx.bot.logout(), ctx.bot.loop)      ##Fix this 
+@bot.command()
+async def restart(ctx):
+    await ctx.message.delete()
+    embed=discord.Embed(title="Restarting...", color= 0x03fcf0)
+    embed.set_author(name= "Get Your Bands Up", icon_url=bot.user.avatar_url)
+    message = await ctx.send(embed=embed)
+    restart_program()
 
 
 bot.run(TOKEN)

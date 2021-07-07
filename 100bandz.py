@@ -52,8 +52,6 @@ def to_async(syncfunc):
 async def on_ready():
     change_status.start()
     print("We have logged in as {0.user}".format(bot))
-        # First get the channel where the message should be sent
-    # channel = discord.utils.get(bot.get_all_channels(), name='general')
     for i in channel_ids:
         channel = bot.get_channel(i)
         embed=discord.Embed(title="Bot is Online", color= 0x03fcf0)

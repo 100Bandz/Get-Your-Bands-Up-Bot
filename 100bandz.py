@@ -50,7 +50,10 @@ async def on_ready():
 async def start(ctx):
     starttime = time.time()
     while True:
-        print("working :D")
+        print("working :D")    
+        embed=discord.Embed(title="Getting your stocks ready! :)", description= 'Please wait...', color= 0x03fcf0)
+        embed.set_author(name= "Get Your Bands Up", icon_url=bot.user.avatar_url)
+        await ctx.send(embed=embed)
         clr = "%06x" % random.randint(0, 0xFFFFFF)
         embed=discord.Embed(title="shmoney 🙏", description= 'The Bread comes first', color= 0x03fcf0)
         embed.set_author(name= ctx.author.display_name, icon_url= ctx.author.avatar_url)

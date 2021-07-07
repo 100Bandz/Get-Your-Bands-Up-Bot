@@ -32,6 +32,8 @@ status = cycle(['AHHH','（。＾▽＾）','🤑🤑🤑','boolin'])
 
 stockdict = {"gme": "GME", 'tesla': 'TSLA', "arkk": "ARKK", "aqn": "AQN", 'suncor' : 'SU.TO', "bitcoin": "BTC-USD", 'arkg': 'ARKG', 'arkx': 'ARKX'}
 
+channel_ids = [829084937738911804, 838242488598134796, 850797794456764419]
+
 def to_async(syncfunc):
     @functools.wraps(syncfunc)
     async def sync_wrapper(*args, **kwargs):
@@ -45,13 +47,16 @@ def to_async(syncfunc):
 @bot.event
 async def on_ready():
     change_status.start()
-    # await bot.change_presence(status=discord.Status.online, activity=discord.Game("🤑🤑🤑"),afk=False)
     print("We have logged in as {0.user}".format(bot))
         # First get the channel where the message should be sent
-    channel = discord.utils.get(bot.get_all_channels(), name='bot-spam')
-    embed=discord.Embed(title="Bot is Online", color= 0x03fcf0)
-    embed.set_author(name= "Get Your Bands Up", icon_url=bot.user.avatar_url)
-    await channel.send(embed=embed)
+    # channel = discord.utils.get(bot.get_all_channels(), name='general')
+    for i in channel_ids:
+        channel = bot.get_channel(i)
+        embed=discord.Embed(title="Bot is Online", color= 0x03fcf0)
+        embed.set_author(name= "Get Your Bands Up", icon_url=bot.user.avatar_url)
+        await channel.send(embed=embed)
+
+
 
 
 @to_async
@@ -68,15 +73,14 @@ def getmarketdata_embed():
 
 @bot.command()
 async def start(ctx):
-    # while True:
-
     embed=discord.Embed(title="Getting your stocks ready! :)", description= 'Please wait...', color= 0x03fcf0)
     embed.set_author(name= "Get Your Bands Up", icon_url=bot.user.avatar_url)
     message = await ctx.send(embed=embed)
 
-    while True:
-        embed = await getmarketdata_embed()
-        await ctx.send(embed=embed)
+    # while True:
+    embed = await getmarketdata_embed()
+    embed.set_author(name= "Get Your Bands Up", icon_url=bot.user.avatar_url)
+    await ctx.send(embed=embed)
 
 
 @tasks.loop(minutes= 5)
